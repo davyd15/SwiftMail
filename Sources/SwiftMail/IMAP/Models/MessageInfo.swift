@@ -26,6 +26,18 @@ public struct MessageInfo: Codable, Sendable {
     /// The BCC recipients of the message
     public var bcc: [String] = []
 
+    /// The `Reply-To` addresses, when the sender named any.
+    ///
+    /// RFC 5322 §3.6.2: when present, this "indicates the address(es) to which the author of the
+    /// message suggests that replies be sent". Mailing lists and ticket systems rely on it, and a
+    /// client that ignores it sends replies to the wrong place — silently, since nothing about
+    /// the sent message looks wrong.
+    ///
+    /// The server sends this in every `ENVELOPE` (RFC 3501 §7.4.2 makes the field mandatory) and
+    /// `NIOIMAPCore` parses it; SwiftMail simply was not reading it. Empty when the sender named
+    /// none, in which case replies belong to ``from``.
+    public var replyTo: [String] = []
+
     /// The date of the message (from the ENVELOPE Date: header — set by the sender)
     public var date: Date?
 
