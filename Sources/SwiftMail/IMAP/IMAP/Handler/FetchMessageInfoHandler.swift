@@ -206,6 +206,7 @@ final class FetchMessageInfoHandler: BaseIMAPCommandHandler<[MessageInfo]>, IMAP
             header.from = formatAddress(envelope.from[0])
         }
         header.to = envelope.to.map { formatAddress($0) }
+        header.replyTo = envelope.reply.map { formatAddress($0) }
         header.cc = envelope.cc.map { formatAddress($0) }
         header.bcc = envelope.bcc.map { formatAddress($0) }
         if let date = envelope.date, let parsed = Self.parseEnvelopeDate(String(date)) {
